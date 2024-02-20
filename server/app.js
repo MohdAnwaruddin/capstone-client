@@ -12,7 +12,7 @@ require('./middleware/auth.js')()
 
 
 const { connect } = require("./Database_mongoose.js");
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 // const mongoString = 'MongoDB Connection String';
 // mongoose.connect(mongoString);
 

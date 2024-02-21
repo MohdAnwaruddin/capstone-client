@@ -18,7 +18,7 @@ const { connect } = require("./Database_mongoose.js");
 
 connect().then((connectedClient) => {
     client = connectedClient;
-    console.log("hi Connected to MongoDB");
+    console.log("Connected to MongoDB");
    }).catch(err => {
     console.error('Failed to connect to MongoDB', err);
     process.exit(1); // Exit the application if the database connection fails

@@ -11,8 +11,13 @@ function NavDropdownExample() {
 
     <Nav variant="pills" activeKey="1" onSelect={handleSelect}>
       <Nav.Item>
-        <Nav.Link eventKey="1" href="#/home">
+        <Nav.Link eventKey="1" href="/">
           Home
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="6" href="/about">
+          About
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
@@ -26,15 +31,19 @@ function NavDropdownExample() {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="4" href="#/login">
+
+
+        <Nav.Link eventKey="4" href="/login">
          Login
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="5" href="#/register">
+        <Nav.Link eventKey="5" href="/register">
          Register
         </Nav.Link>
       </Nav.Item>
+
+
       <NavDropdown title="More" id="nav-dropdown">
         <NavDropdown.Item eventKey="4.1">Entertainment</NavDropdown.Item>
         <NavDropdown.Item eventKey="4.2">Science</NavDropdown.Item>

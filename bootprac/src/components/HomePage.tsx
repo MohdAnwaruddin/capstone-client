@@ -5,11 +5,6 @@ const HomePage: React.FC = () => {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    // Fetch news data from API
-    // Example: fetch('https://api.example.com/news')
-    // .then(response => response.json())
-    // .then(data => setNews(data))
-    // .catch(error => console.error('Error fetching news:', error));
   }, []);
 
   return (

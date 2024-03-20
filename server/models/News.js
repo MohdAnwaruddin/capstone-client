@@ -25,15 +25,35 @@ const newsSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  author: {
+    type: String,
+    required: false,
+  },
   url: {
     type: String,
     required: false,
   },
-  urlToImage: {
+  ID: {
     type: String,
     required: false,
   },
-  createdAt: {
+  category: {
+    type: String,
+    required: false,
+  },
+  content: {
+    type: String,
+    required: false,
+  },
+  summary: {
+    type: String,
+    required: false,
+  },
+  urlToImage: {
+    type: String, // Assuming the image will be stored as a base64 string
+    required: false,
+  },
+  publishedAt: {
     type: Date,
     default: Date.now,
   },

@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const cors = require('cors');
 const User = require('./models/user.js')
 const accountController = require('./controllers/accountController')
 const LocalStrategy = require('passport-local');
@@ -7,9 +8,10 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const newsRoutes = require('./routes/newsRoutes.js');
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors());
 
 require('./middleware/auth.js')()
-
 
 const { connect } = require("./Database_mongoose.js");
 //const mongoose = require('mongoose');

@@ -6,9 +6,8 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Assuming you have a User model
+  username: {
+    type: String,
   },
   createdAt: {
     type: Date,

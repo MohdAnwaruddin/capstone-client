@@ -84,9 +84,9 @@ const summarizeContent = async (content) => {
 
 const fetchDataAndStoreInMongoDB = async () => {
   try {
-    
+
     //Using the below only for testing purpose
-    //const categories = ['entertainment'];
+    //const categories = ['sports'];
     const categories = [ 'sports', 'health', 'science', 'technology', 'business', 'entertainment']; // Specify the categories to fetch
 
     for (const category of categories) {
@@ -95,6 +95,19 @@ const fetchDataAndStoreInMongoDB = async () => {
 
       // Store each article in MongoDB
       for (const article of articles) {
+        let existingArticle;
+        if (article.id || article.id === null || article.id === 'null') {
+          // Check if an article with the same ID already exists in the database
+          existingArticle = await News.findOne({ ID: article.id });
+        } else if (article.title) {
+          // Check if an article with the same title already exists in the database
+          existingArticle = await News.findOne({ title: article.title });
+        }
+
+        if (existingArticle) {
+          console.log(`Article with ID ${article.id || 'N/A'} or title ${article.title || 'N/A'} already exists. Skipping...`);
+          continue;
+        }
         // Fetch content from the body of the website
         const html = await getHtmlFromBody(article.url);
         // Skip processing if HTML is null (403 error)
@@ -106,7 +119,7 @@ const fetchDataAndStoreInMongoDB = async () => {
 
       const summary = await summarizeContent(content);
       // console.log(summary);
-      // console.log("-------------");
+
       // Create a new News document
       const newsSource = new News({
         ID: article.id,
@@ -131,14 +144,22 @@ const fetchDataAndStoreInMongoDB = async () => {
 }
 };
 
-// Schedule the fetchDataAndStoreInMongoDB function to run every midnight
-// cron.schedule('0 0 * * *', async () => {
-//   console.log('Running fetchDataAndStoreInMongoDB...');
-//   await fetchDataAndStoreInMongoDB();
-// });
+// Schedule the fetchDataAndStoreInMongoDB function to run every 30 minutes
+// cron.schedule('*/15 * * * *', async () => {
 
-// console.log('Cron job scheduled to run every midnight.');
-fetchDataAndStoreInMongoDB();
+// Schedule the fetchDataAndStoreInMongoDB function to run every midnight
+cron.schedule('0 0 * * *', async () => {
+  try {
+    await fetchDataAndStoreInMongoDB();
+    console.log('Data fetched and stored successfully!');
+  } catch (error) {
+    console.error('Error fetching or storing data:', error.message);
+  }
+});
+
+router.get('/fetchDataAndStoreInMongoDB', (req, res) => {
+  res.json({ message: 'Fetching data and storing in MongoDB scheduled successfully!' });
+});
 
 // Get all news
 router.get('/', async (req, res) => {
@@ -347,8 +368,7 @@ router.get('/latest', async (req, res) => {
 // Add comment to a news article
 router.post('/id/:id/comments', async (req, res) => {
   const newsId = req.params.id;
-  const { text, user } = req.body;
-
+  const { text, username } = req.body;
   try {
     const news = await News.findById(newsId);
 
@@ -356,8 +376,8 @@ router.post('/id/:id/comments', async (req, res) => {
       return res.status(404).json({ error: 'News not found' });
     }
 
-    // Add the comment to the news article
-    news.comments.push({ text, user });
+    // Add the comment to the news article along with the username
+    news.comments.push({ text, username});
     await news.save();
 
     res.json({ message: 'Comment added successfully', news });
@@ -370,7 +390,6 @@ router.post('/id/:id/comments', async (req, res) => {
 // Retrieve comments for a news article
 router.get('/id/:id/comments', async (req, res) => {
   const newsId = req.params.id;
-
   try {
     const news = await News.findById(newsId);
 

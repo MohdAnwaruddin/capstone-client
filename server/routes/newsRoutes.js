@@ -105,7 +105,7 @@ const fetchDataAndStoreInMongoDB = async () => {
         }
 
         if (existingArticle) {
-          // console.log(`Article with ID ${article.id || 'N/A'} or title ${article.title || 'N/A'} already exists. Skipping...`);
+          console.log(`Article with ID ${article.id || 'N/A'} or title ${article.title || 'N/A'} already exists. Skipping...`);
           continue;
         }
         // Fetch content from the body of the website
@@ -147,11 +147,8 @@ const fetchDataAndStoreInMongoDB = async () => {
 // Schedule the fetchDataAndStoreInMongoDB function to run every 30 minutes
 // cron.schedule('*/15 * * * *', async () => {
 
-
-//cron.schedule('0 0 * * *', async () => {
 // Schedule the fetchDataAndStoreInMongoDB function to run every midnight
-cron.schedule('*/3 * * * *', async () => {
-// cron.schedule('0 0 * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
   try {
     await fetchDataAndStoreInMongoDB();
     console.log('Data fetched and stored successfully!');
@@ -163,7 +160,6 @@ cron.schedule('*/3 * * * *', async () => {
 router.get('/fetchDataAndStoreInMongoDB', (req, res) => {
   res.json({ message: 'Fetching data and storing in MongoDB scheduled successfully!' });
 });
-
 
 // Get all news
 router.get('/', async (req, res) => {

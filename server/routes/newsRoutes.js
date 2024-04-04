@@ -355,7 +355,7 @@ router.get('/category/:category', async (req, res) => {
 router.get('/latest', async (req, res) => {
   try {
       // Find and sort all news articles based on the publishedAt field in descending order
-      const latestNews = await News.find().sort({ publishedAt: -1 }).limit(10);
+      const latestNews = await News.find().sort({ publishedAt: -1 }).limit(20);
 
       res.json(latestNews);
   } catch (error) {

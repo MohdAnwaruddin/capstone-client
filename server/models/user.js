@@ -10,16 +10,24 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Email is required."],
+    match: [/^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/i, "Invalid email address"],
     unique: true
+  },
+  password: {
+    type: String,
+    required: true
   }
 });
 
-UserSchema.plugin(passportLocalMongoose, {
-  usernameField: 'username', // Specify the field to use for username (default is 'username')
-  usernameLowerCase: true,   // Ensure that usernames are always lowercase
-  session: false              // Disable sessions as we're using JWTs
-});
+// UserSchema.plugin(passportLocalMongoose, {
+//   salt: 0,
+//   hash: 0, // Disable automatic hashing
+//   usernameField: 'username', // Specify the field to use for username (default is 'username')
+//   usernameLowerCase: true,   // Ensure that usernames are always lowercase
+//   session: false,              // Disable sessions as we're using JWTs
+  
+// });
 
 
 const UserModel = mongoose.model('user', UserSchema);

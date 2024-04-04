@@ -46,11 +46,11 @@ const Header: React.FC = () => {
 
 
         {auth.isLoggedIn ? (
-          <li>
+        
             <button onClick={logout} 
             className='px-4 py-2 rounded-full bg-green-500 text-white font-semibold border border-green-600 hover:bg-green-600 focus:outline-none focus:bg-green-600 flex items-center'            
             >Logout</button>
-          </li>
+          
         ) : (
             <>
             {/* <li className="user-section-item">

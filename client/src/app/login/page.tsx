@@ -2,9 +2,10 @@
 import { useRouter } from 'next/navigation';
 
 import { useState, useContext } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../../axiosInstance';
 import AuthContext, { AuthContextType } from '@/context/AuthContext';
 import Link from 'next/link';
+import '../../app/components/layout/layout.css'
 
 
 const Login = () => {
@@ -62,18 +63,24 @@ const Login = () => {
     if (formIsValid) {
     // If form is valid, proceed with submission
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/auth/login',
+      const response = await axiosInstance.post(
+        '/api/auth/login',
         { username, email : username, password },
         { headers: { 'Content-Type': 'application/json' } }
       );
 
-      console.log('Login successful');
-      localStorage.setItem('_id', response.data.user._id);
-      localStorage.setItem('token', response.data.token);
+      console.log('Login successful', response);
+      if(response.status == 200){
+        localStorage.setItem('_id', response.data.user._id);
+        localStorage.setItem('username', response.data.user.username);
+        localStorage.setItem('token', response.data.token);
+  
+        auth.login();
+        router.push('/');
+      }else if(response.data.code == 401){
 
-      auth.login();
-      router.push('/');
+      }
+
     } catch (err: any) {
       console.log(err);
       setError( err.response.data.error||err.response.data ||'something went wrong');
@@ -82,7 +89,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-4 lg:px-8">
+    <div className="container flex min-h-full flex-col justify-center px-6 py-4 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img className="mx-auto h-24 w-auto" src="news.png" alt="logo" />
         <h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-teal-600">Sign in to your account</h2>

@@ -36,7 +36,7 @@ exports.login = async function (req, res) {
     };
 
     const token = jwt.encode(payload, config.jwtSecret);
-    res.json({ 
+    res.status(200).json({ 
       user: user,
       token: token });
   } catch (error) {

@@ -109,12 +109,14 @@ const Register = () => {
             // Make POST request to register endpoint
             const response = await axiosInstance.post('/api/auth/register', data,config);
 
-            console.log('Registration successful');
+            console.log(response,'Registration successful');
+
             router.push('/login');
             // Redirect or perform any other action upon successful registration
         } catch (e: any) {
             console.log('error ', e.message);
             setError(e.response.data.error || 'something went wrong');
+            setLoading(false)
           }
     };
 
